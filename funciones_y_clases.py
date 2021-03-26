@@ -1,15 +1,16 @@
 global1 = 34
 
-def cambiar_global():
+def cambiar_global(newValue):
     '''Cambiar una variable global
 
     Esta función debe asignarle a la variable global `global1` el valor que se
     le pasa como único argumento posicional.
     '''
-    pass
+    global global1;
+    global1 = newValue;
 
 
-def anio_bisiesto():
+def anio_bisiesto(year):
     '''Responder si el entero pasado como argumento es un año bisiesto
     
     Para determinar si un año es bisiesto, se deben tener en cuenta las 
@@ -21,9 +22,18 @@ def anio_bisiesto():
 
     Retorna True o False
     '''
-    pass
+    if year % 4 == 0 : 
+        if year % 100 == 0 :
+            if year % 400 == 0 :
+                return True
+            else :
+                return False
+        else : 
+          return True
+    else : 
+      return False
 
-def contar_valles():
+def contar_valles(liste = [-1,1,0,1,1,-1,0,0,1,-1,1,1,-1,-1]):
     r'''Contar el número de valles
 
     Esta función debe recibir como argumento una lista de -1's, 0's y 1's, y lo 
@@ -41,9 +51,9 @@ def contar_valles():
     representados en la lista, que para el ejemplo que se acaba de mostrar es
     de 3 valles.
     '''
-    pass
+    return ''.join([str(step) for step in liste]).replace('0', '').count('-11');
 
-def saltando_rocas():
+def saltando_rocas(liste):
     '''Mínimo número de saltos en las rocas
 
     Esta función hace parte de un juego en el que el jugador debe cruzar un río
@@ -57,9 +67,17 @@ def saltando_rocas():
     El objetivo es devolver el número mínimo de saltos que debe realizar el 
     jugador para ganar la partida
     '''
-    pass
+    jumps = 0
+    position = 0
+    while position < len(liste) -1:
+        jumps += 1 
+        if position + 2 < len(liste) and liste[position + 2] == 0:
+            position += 2
+            continue
+        position += 1
+    return jumps
 
-def pares_medias():
+def pares_medias(socks):
     '''Contar pares de medias
 
     Esta función debe recibir como argumento una lista de enteros. Cada elemento
@@ -71,16 +89,27 @@ def pares_medias():
     
     Las medias que no tengan pares no deberían ser incluídas en el diccionario.
     '''
-    pass
-
+    pairs = dict()
+    incomplete = []
+    for color in socks:
+        if incomplete.count(color) > 0:
+            current_pairs = 0 if pairs.get(color) is None else pairs.get(color)
+            pairs.update({color : current_pairs + 1})
+            incomplete.remove(color)
+        else:
+            incomplete.append(color)
+    return pairs
 # Crear una clase llamada `ListaComa` que reciba en su constructor un iterable
 # con el valor inicial para una lista que se guardará en un atributo llamado 
 # `lista`. Implementar el método __str__ para que devuelva un string con todos
 # los elementos del atributo `lista` unidos a través de comas. Ejemplo:
 # si `lista` es [1,2,3,4], __str__ debe devolver '1,2,3,4'
 
-
-
+class ListaComa():
+    def __init__(self, lista):
+        self.lista = lista
+    def __str__(self):
+        return ','.join([str(item) for item in self.lista])
 
 # Crear una clase llamada `Persona` que reciba en su constructor como 1er 
 # argumento un iterable con el valor inicial para una lista que se guardará en
@@ -97,9 +126,12 @@ def pares_medias():
 # Ejemplo:
 # si `nombres` es ['Juan', 'David'] y `apellidos` es ['Torres', 'Salazar'],
 # el método `nombre completo` debe devolver  'Juan David Torres Salazar'
-
-
-
+class Persona():
+    def __init__(self, nombres, apellidos):
+        self.nombres = [str(nombre).capitalize() for nombre in nombres]
+        self.apellidos = [str(apellido).capitalize() for apellido in apellidos]
+    def nombre_completo(self):
+        return ' '.join(self.nombres) + ' ' + ' '.join(self.apellidos)
 
 
 # Crear una clase llamada `Persona1` que herede de la clase `Persona`, y que en su
@@ -113,3 +145,10 @@ def pares_medias():
 # si `fecha_nacimiento` es 1985-10-21 y la fecha actual es 2020-10-20, el método
 # `edad` debe devover 35.
 
+from datetime import date
+class Persona1(Persona):
+    def __init__(self, nombres, apellidos, fecha_nacimiento):
+        super().__init__(nombres, apellidos)
+        self.fecha_nacimiento = fecha_nacimiento
+    def edad(self):
+        return int((date.today() - self.fecha_nacimiento).days/365.25)
